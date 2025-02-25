@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Main() {
     const [meme, setMeme] = useState({
@@ -7,12 +7,20 @@ export default function Main() {
         imageUrl: "https://i.imgflip.com/7bv2j9.jpg?a483036"
     })
 
+    const [memeList, setMemeList] = useState([])
+
+    useEffect(() => {
+        fetch("https://api.imgflip.com/get_memes")
+            .then(res => res.json())
+            .then(data => setMemeList(data.data.memes))
+    }, [])
+
     function handleChange(event) {
-        const {value} = event.currentTarget
+        const {value, name} = event.currentTarget
         console.log(value)
         setMeme(prevMeme => ({
             ...prevMeme,
-            topText: value
+            [name]: value
             })
         )
     }
@@ -26,6 +34,7 @@ export default function Main() {
                         placeholder="Road work ahead?"
                         name="topText"
                         onChange={handleChange}
+                        value={meme.topText}
                     />
                 </label>
 
@@ -34,6 +43,8 @@ export default function Main() {
                         type="text"
                         placeholder="I sure hope it does"
                         name="bottomText"
+                        onChange={handleChange}
+                        value={meme.bottomText}
                     />
                 </label>
                 <button>Get a new image 🖼</button>
