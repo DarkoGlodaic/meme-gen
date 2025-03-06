@@ -4,7 +4,8 @@ export default function Main() {
     const [meme, setMeme] = useState({
         topText: "Road work ahead?",
         bottomText: "I sure hope it does",
-        imageUrl: "https://i.imgflip.com/7bv2j9.jpg?a483036"
+        imageUrl: "https://i.imgflip.com/7bv2j9.jpg?a483036",
+        imageAlt: "Avatar guy meme"
     })
 
     const [memeList, setMemeList] = useState([])
@@ -14,6 +15,16 @@ export default function Main() {
             .then(res => res.json())
             .then(data => setMemeList(data.data.memes))
     }, [])
+
+    function handleNewMeme() {
+        const randomMeme = memeList[Math.floor(Math.random() * memeList.length)]
+        setMeme((prevMeme) => ({
+            ...prevMeme,
+            imageUrl: randomMeme.url,
+            imageAlt: randomMeme.name
+        })
+        )
+    }
 
     function handleChange(event) {
         const {value, name} = event.currentTarget
@@ -47,10 +58,10 @@ export default function Main() {
                         value={meme.bottomText}
                     />
                 </label>
-                <button>Get a new image 🖼</button>
+                <button onClick={handleNewMeme}>Get a new image 🖼</button>
             </div>
             <div className="meme">
-                <img src={meme.imageUrl}/>
+                <img src={meme.imageUrl} alt={meme.imageAlt}/>
                 <span className="top">{meme.topText}</span>
                 <span className="bottom">{meme.bottomText}</span>
             </div>

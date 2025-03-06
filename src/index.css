@@ -101,8 +101,10 @@ main {
 
 .top {
   top: 0;
+  user-select: none;
 }
 
 .bottom {
   bottom: 0;
+  user-select: none;
 }
